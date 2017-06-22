@@ -1,0 +1,101 @@
+/**
+ * Group: Davis Doan(cssc1090) & Jon Verne(cssc1145)
+ * CS 570 Operating Systems Summer 2017
+ * Assignment 3: Interrupt, Clock, & Timer
+ * Filename: main.c
+ */
+
+#include "header.h"
+int run_time;
+time_t alarm_time; 
+int alarm_argument;
+time_t system_time;
+struct tm *local_time;
+
+void obtain_runtime_alarm(int argc, char *argv[])
+{
+   if( argc == 3) {
+     printf("two args provided\n");     
+     run_time = atoi(argv[1]);
+     alarm_argument = atoi(argv[2]);
+   } else if (argc == 2){ // only one argument given 
+     printf("only one argument provided\n");
+     run_time = atoi(argv[1]);
+     alarm_argument = 10;     
+    } else {
+        // set to default values cause none were provided
+        printf("no arguments provided\n");
+        run_time = 30;
+        alarm_argument = 10;
+    }
+}
+
+
+int create_child_one_clock()
+{
+    pid_t pid1 = fork();
+    int flag = 10;
+    
+    system_time = time(NULL);
+    alarm_time = system_time + alarm_argument;   
+
+    if(pid1 == 0){
+        // child succesfully created!
+        printf("Child one is ready\n");
+        
+        // Child one prints the hour, min, sec every second
+        // while the 2nd process hasn't told the first to terminate
+        // keep printing the time
+        while(flag > 0) {
+            system_time = time(NULL);
+            local_time = localtime(&system_time);
+            printf("===== your system time is %d\n", system_time);
+            printf("===== *** your alarm time is %d\n",alarm_time);
+            printf("The local time is : %d:%d:%d\n", local_time->tm_hour, local_time->tm_min, local_time->tm_sec);
+
+            printf("$$$$$ LOCAL TIME %d $$$$$$$$$\n", local_time);
+            sleep(1);
+            flag--;
+            // if clock time matches the run time, print the ALARM time
+            // compare the arg 2, 3, 4 against the tm hour/min/sec
+            if(alarm_time == system_time) {
+                printf("system and alarm time match\n");
+            }
+        }
+       
+    } else if ( pid1 < 0) {
+        printf("Creating child one failed\n");
+        return -1;
+    } else {
+        // i am the parent
+        printf("I am your father\n");
+    }
+}
+
+int create_child_two_countdown()
+{
+
+}
+
+int main( int argc, char *argv[]){
+    // read the run time the user wants the program to run for
+    //       if no value then do a default of 30 seconds
+    obtain_runtime_alarm(argc, argv);
+
+    // create two child processes
+    // first process implements a clock which prints the hour, min, and sec every second
+    //       if the hour,min, sec matches the user ALARM time, PRINT THE ALARM TOO
+    create_child_one_clock();
+
+    // SECOND process upon reaching the end of the RUNTIME
+    //     notify using signal or pipe the FIRST child to terminate
+    //     then the second child terminates itself
+    //child_two_signal();
+    
+    // the main program will busy wait until all child process are done
+
+    // Once both children are done, print a friendly message and
+    // then main program wil then cleanly exit
+    //printf("Assignment 3 is finished, main program exiting\n");
+    return 0;
+}

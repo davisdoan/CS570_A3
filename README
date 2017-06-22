@@ -1,0 +1,25 @@
+Group: Davis Doan(cssc1090) & Jon Verne(cssc1145)
+CS570 Operating Systems Summer 2017
+Assignment #1: Process Manager 
+Filename: README
+Account Available for Testing: cssc1090
+
+This assignment contains the following files, README.txt file, a header file called header.h and my main program called main.c. Our main program is the parent process for the threads that will be running, handling the creation and joining of the threads. Makefile includes a script to allow you to call it to compile and run the program greatly reducing repetitive command line arguments. QUOTE.txt will contain all of the printed output done by the threads.
+
+header.h -- header
+main.c --- main program
+makefile -- makefile
+QUOTE.txt -- output file.
+
+To Run this program call 
+make 
+
+./bots to launch assignment 1. 
+
+
+Lessons Learned:
+1. We learned how to create threads
+2. We learned how to work with semaphores
+3. We learned how to work with VIM
+4. We learned how to work with make files and header files
+5. We got practice with C++
