@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <string>
 #include <stdio.h>
+#include <signal.h>
 using namespace std;
 
 #define N 7
