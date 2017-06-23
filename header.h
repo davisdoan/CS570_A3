@@ -14,9 +14,12 @@
 #include <semaphore.h>
 #include <pthread.h>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
 #include <stdio.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
 using namespace std;
 
 #define N 7

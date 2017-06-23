@@ -14,5 +14,4 @@ make:
 	$(CC) $(flags) -o$(EXE) $(FILE)
 
 clean:main.c
-	rm QUOTE.txt
 	rm aclock
