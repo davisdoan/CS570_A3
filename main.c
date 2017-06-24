@@ -40,9 +40,9 @@ int create_child_one_clock()
 {
     system_time = time(NULL); 
     alarm_time = system_time + alarm_argument;   
-    char readbuffer[10];
-    char stringArray[10];
-    strcpy(stringArray, "terminate"); // what is happening here?
+    char readbuffer[2];
+    char stringArray[2];
+    strcpy(stringArray, "@"); // what is happening here?
 
         // Child one prints the hour, min, sec every second
         // while the 2nd process hasn't told the first to terminate
@@ -75,26 +75,35 @@ int create_child_one_clock()
 int create_child_two_countdown()
 {
    time_t target_time;
+   int timer;
     // SECOND process upon reaching the end of the RUNTIME
     //     notify using signal or pipe the FIRST child to terminate
-       printf("child two created!\n");
-       
+       //printf("child two created!\n");
        system_time = time(NULL);
        target_time = system_time + run_time;
-       printf("CHILD TWO: system time is: %d\n", system_time);
-       printf("CHILD TWO: target time is: %d\n", target_time);
+          
+       for(timer = 0; timer < 30; timer++)
+       {
+            printf("\n"); 
+       }
+       //printf("CHILD TWO: system time is: %d\n", system_time);
+       //printf("********************\n");
+       //printf("CHILD TWO: target time is: %d\n", target_time);
        int b = 1;
-       string flagString = "terminate";
+       string flagString = "z";
        while(b){
            //printf("child two is checking system time vs target time\n");
            system_time = time(NULL);
+           //printf("\n");
            if(system_time == target_time) {
                // time is up, tell child one to terminate
                //printf(">>>>>>>>>>> Time is Up! Signal CAUGHT<<<<<<<<<<< \n");
                // if child_one is terminated, terminate child two
-               
-               //dup2(fd[1],1); // set to the write - this is the standard output
-               write(fd[1], "terminate",10); // write to the fd pipe, tell one to terminate
+               fflush(stdout); 
+             //dup2(fd[1],1); // set to the write - this is the standard output
+             // close(fd[0]); 
+             //printf("@\n");
+              write(fd[1], "@",2); // write to the fd pipe, tell one to terminate
                exit(1);
            }
            
